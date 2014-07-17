@@ -33,7 +33,13 @@ auto pack android app through ant
 
     b.如果在使用的过程中出现了。invalid resource blablabla之类的。然后以bin/res/crunch结尾的，请删除之。
 
-   
+
+    c.签名
+        在根目录添加 ant.properties，内容是key的路径以及密码神马的
+        key.store=abc.keystore
+        key.alias=abc
+        key.store.password=123
+        key.alias.password=123   
 
 
 注：

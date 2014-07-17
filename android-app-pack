@@ -40,7 +40,7 @@ fi
 cat $configFile | grep "channel="  | awk -F\= '{print $2}' |  while read line
 do
     echo "PACKAGING channel $line"
-    ant auto-debug -DUMENG_CHANNEL=$line
+    ant auto-release -DUMENG_CHANNEL=$line
     echo
     echo
 done
