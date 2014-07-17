@@ -10,10 +10,13 @@ auto pack android app through ant
  
     b.  把本目录的路径放到PATH中。(Linux和Mac用户你懂的)，如果是windows用户，俺也不管了。
 
-    c.  在工程根目录或者指定工程目录执行android-app-pack。譬如 ~/xxx: android-app-pack 或者 android-app-pack ~/xxx
+    c.  在工程根目录或者指定工程目录执行android-app-pack。
+            
+            譬如 ~/xxx: android-app-pack 或者 android-app-pack ~/xxx
 
 
-2.
+2.相关说明
+
     a.友盟多渠道打包：
     
         在根目录里面，创建一个"pack.config"文件。有几个channel就创建几条channel=xxx（xxx表示channel name）
