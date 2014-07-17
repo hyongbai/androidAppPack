@@ -12,7 +12,7 @@ fi
 configFile="pack.config"
 
 #import base functions 
-source android_manifest
+source android-manifest
 
 
 #remove folder crunch in bin of project
