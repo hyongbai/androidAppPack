@@ -8,6 +8,7 @@ if [ ! -f "AndroidManifest.xml" ];then
     exit
 fi
 
+startTime=$(date +%s)
 
 configFile="pack.config"
 
@@ -32,17 +33,18 @@ if [ ! -f "$configFile" ]; then
     ant auto-release -DUMENG_CHANNEL=official
     #ant auto-release 
     #ant auto-debug -DUMENG_CHANNEL=googlePlayStore
-    exit
+else
+    #cat $configFile | grep package
+    cat $configFile | grep "channel="  | awk -F\= '{print $2}' |  while read line
+    do
+        echo "PACKAGING channel $line"
+        ant auto-release -DUMENG_CHANNEL=$line
+        echo
+        echo
+    done
 fi
 
-#cat $configFile | grep package
-
-cat $configFile | grep "channel="  | awk -F\= '{print $2}' |  while read line
-do
-    echo "PACKAGING channel $line"
-    ant auto-release -DUMENG_CHANNEL=$line
-    echo
-    echo
-done
-
-
+echo
+echo "----------------------------------------------"
+echo "duration is $(expr $(date +%s) - $startTime)"
+echo
