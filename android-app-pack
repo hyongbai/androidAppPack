@@ -1,0 +1,48 @@
+#!/bin/bash
+if [ "$1" != "" ]; then
+    cd $1
+fi
+
+if [ ! -f "AndroidManifest.xml" ];then
+    echo "no AndroidManifest.xml!!!!"
+    exit
+fi
+
+
+configFile="pack.config"
+
+#import base functions 
+source android_manifest
+
+
+#remove folder crunch in bin of project
+print_divider
+echo "remove crunch"
+print_divider
+clean_crunch_in_bin
+
+#generate build
+print_divider
+echo "generating config"
+print_divider
+ant_build_config
+
+
+if [ ! -f "$configFile" ]; then
+    ant auto-release -DUMENG_CHANNEL=official
+    #ant auto-release 
+    #ant auto-debug -DUMENG_CHANNEL=googlePlayStore
+    exit
+fi
+
+#cat $configFile | grep package
+
+cat $configFile | grep "channel="  | awk -F\= '{print $2}' |  while read line
+do
+    echo "PACKAGING channel $line"
+    ant auto-debug -DUMENG_CHANNEL=$line
+    echo
+    echo
+done
+
+

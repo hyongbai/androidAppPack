@@ -1,0 +1,62 @@
+#!/bin/bash
+
+function print_divider()
+{
+    echo -------------------------------------------
+}
+
+function android_version()
+{
+    export versionCode=$(cat AndroidManifest.xml | grep android:versionCode=\" | grep -v "@" | awk -F\" '{print $2}')
+    export versionName=$(cat AndroidManifest.xml | grep android:versionName=\" | grep -v "@" | awk -F\" '{print $2}')
+    export targetSdk=$(cat AndroidManifest.xml | grep android:targetSdkVersion=\" | awk -F\" '{print $2}')
+    echo "           versionCode $versionCode"
+    echo "           versionName $versionName"
+    echo "           targetSdk   $targetSdk"
+}
+
+function clean_crunch_in_bin()
+{
+    find . -type d -name "crunch" | grep "\/bin\/res\/crunch" | xargs rm -rf
+}
+
+
+#need targetSdk
+function generate_build()
+{
+#    if [ ! -f "build.xml"]; then
+        echo "generating build.xml"
+        echo ">>>START"
+        android update project -p . -s -t "android-$targetSdk"
+#    else
+#        echo "build.xml has been generated :);):);)"
+#    fi
+
+}
+
+
+function ant_build_config()
+{
+
+    pwd=${PWD##}
+    
+    android_version
+
+    #generate build.xml for current project
+    generate_build
+
+    #generate build.xml for referenced libs
+    cat project.properties | grep "android.library.reference"  | awk -F\= '{print $2}' |  while read line 
+    do
+
+        echo 
+        print_divider
+        echo "       INITILIZING $line"
+        print_divider
+        #echo ${PWD##} $line
+        cd $pwd/$line
+        generate_build
+
+    done
+}
+
