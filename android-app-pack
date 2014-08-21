@@ -28,9 +28,9 @@ echo "generating config"
 print_divider
 ant_build_config
 
-
+DEBUG=false;
 if [ ! -f "$configFile" ]; then
-    ant auto-release -DUMENG_CHANNEL=official
+    ant auto-release -DUMENG_CHANNEL=official -DDEBUG_MODE=$DEBUG
     #ant auto-release 
     #ant auto-debug -DUMENG_CHANNEL=googlePlayStore
 else
@@ -38,7 +38,7 @@ else
     cat $configFile | grep "channel="  | awk -F\= '{print $2}' |  while read line
     do
         echo "PACKAGING channel $line"
-        ant auto-release -DUMENG_CHANNEL=$line
+        ant auto-release -DUMENG_CHANNEL=$line -DDEBUG_MODE=$DEBUG
         echo
         echo
     done

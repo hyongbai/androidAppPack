@@ -51,6 +51,9 @@
         </antcall>
 
         <!-- 修改友盟渠道 -->
+        <antcall target="-change-debug-mode">
+        </antcall> 
+        <!-- 修改友盟渠道 -->
         <antcall target="-change-umeng-channel">
         </antcall>
 
@@ -77,6 +80,7 @@
 
         <property file="auto.prop" />
         <echo message="package: ${auto.package}" />
+        <echo message="DEBUG_MODE : ${auto.debug.mode}" />
         <echo message="UMENG_CHANNEL : ${auto.umeng.channel}" />
         <echo message="versionCode: ${auto.final.versionCode}" />
         <echo message="versionName: ${auto.final.versionName}" />
@@ -93,6 +97,16 @@
         </replace>
     </target>
     
+    <target name="-change-debug-mode">
+        <propertyfile file="auto.prop">
+            <entry key="auto.debug.mode" value="${DEBUG_MODE}" />
+        </propertyfile>
+        <echo message="DEBUG_MODE : ${DEBUG_MODE}" />
+        <replaceregexp file="${auto.project.tmp.dir}/AndroidManifest.xml"
+           match="&lt;meta\-data(\s+)android:name=&quot;DEBUG&quot;(\s+)android:value=&quot;[a-zA-Z0-9]+&quot;"
+           replace="&lt;meta\-data android:name=&quot;DEBUG&quot; android:value=&quot;${DEBUG_MODE}&quot;"
+        />
+    </target>
     <target name="-change-umeng-channel">
         <!-- <condition property="UMENG_CHANNEL" value="debug" else="release">
             <istrue value="${build.last.is.packaging.debug}" />
